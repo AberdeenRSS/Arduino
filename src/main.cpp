@@ -7,7 +7,7 @@
 
 #include <serial.hpp>
 
-MyServo myServo;
+Servo myServo;
 AnalogThemp analogTempSensor;
 HumTemp humTempSensor;
 AbstractSensor* arr[2];
@@ -59,6 +59,8 @@ AbstractSensor* arr[2];
 //   }
 // }
 
+bool on = false;
+
 void onPacket(RSSPacket &packet){
 
 }
@@ -70,9 +72,33 @@ void setup(){
 
   startHardwareSerial(onPacket);
 
+  pinMode(13, OUTPUT);
+  pinMode(7, INPUT_PULLUP);
+
+  myServo.attach(4);
+  myServo.write(90);
+
 }
 
 void loop(){
+
+  int pressed = digitalRead(7);
+
+  if(pressed == LOW){
+    on = !on;
+    if(on){
+      myServo.write(90);
+      digitalWrite(13, HIGH);
+    }
+    else{
+      myServo.write(155);
+      digitalWrite(13, LOW);
+
+    }
+    delay(300);
+  }
+  
+  
 
   runRead();
 
@@ -81,7 +107,7 @@ void loop(){
   packet.command = 0x22;
   packet.payloadLength = 0;
 
-  delay(1000);
+  delay(1);
 
   write(packet);
 }
