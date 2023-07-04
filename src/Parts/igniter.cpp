@@ -12,13 +12,13 @@ void Igniter::init() {
 }
 
 int Igniter::action(char c) {
-    if (c == IgniteCommand)
-        digitalWrite(IgniterPin, HIGH);   
-        state = Ignited;
-        currentMillis = millis();
-        return 1;
+    if (c != IgniteCommand)
+        return 0;
 
-    return 0;
+    digitalWrite(IgniterPin, HIGH);   
+    state = Ignited;
+    currentMillis = millis();
+    return 1;
 }
 
 void Igniter::update() {
