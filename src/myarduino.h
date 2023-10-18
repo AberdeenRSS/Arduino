@@ -1,18 +1,23 @@
 #pragma once
 
+#include "AComponents/bst.h"
+#include "AComponents/heap.h"
+
 class Interface;
 
 class MyArduino {
-  enum Parts { Reset = 0, Servo, Igniter };
-
 public:
-  MyArduino();
-
-  void init();
-  int  action(int part, char command);
   void update();
+  void read_data();
 
-private:
-  static const int size = 3;
-  Interface* arr[size];
+  char find(unsigned  char part, char code);
+  void reg(Interface*r, bool updates = false);
+  void addUpdateComponent(unsigned long nextUpdate, Interface* component);
+
+  void show();
+
+private:  
+  BT<unsigned  char, Interface*> bt;
+  Heap<Wrapper<Interface*>> heap;
+
 };

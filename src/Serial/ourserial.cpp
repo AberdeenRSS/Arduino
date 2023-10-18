@@ -1,43 +1,60 @@
 #include "ourserial.h"
+#include "myarduino.h"
+#include "Parts/AParts/apart.h"
+#include "Messages/commandmessage.h"
+#include "Messages/sensormessage.h"
+#include "errors.h"
 
 namespace OurSerial {
-    char buffer[128];
+    MyArduino* myArduino = make_Sensor<MyArduino>();
 
-    tinyproto::Hdlc hdlc1(buffer, 128);
+   // char ourBuffer[128];
 
+   // tinyproto::Hdlc hdlc1(ourBuffer, 128);
+    tinyproto::Light  proto;
     tinyproto::StaticPacket<64> tinyPacket;
 
-    char data_buffer[128];
+   // char data_buffer[128];
 
-     void startSerial(void (*on_receive_callback)(tinyproto::IPacket &pkt)) {
-        // Serial.begin(9600);
+    void onReceive(void* data) {
+        CommandMessage* msg1 = static_cast<CommandMessage*>(data);
+        char result = msg1->check();
 
-        hdlc1.enableCheckSum();
-
-        hdlc1.setReceiveCallback(on_receive_callback);
-
-        hdlc1.begin();
-
-    }
-
-    void receive() {
-        while(Serial.available()) {
-            uint8_t byte = Serial.read();
-            hdlc1.run_rx( &byte, 1 ); // run FD protocol parser to process data received from the channel
-        } 
-    }
-
-    void sendPacket(){
-        tinyPacket.clear();
+        if (result == Errors::Success)
+            result = myArduino->find(msg1->getPart(), msg1->getCommand());
         
 
-        hdlc1.write(tinyPacket);
-
-        hdlc1.run_tx(data_buffer, 128);
-        hdlc1.run_rx(data_buffer, 128);
+        CommandResponseMessage::sendMessage(msg1->getPart(), msg1->getCommand(), result);
     }
 
-    void sendPacket(char* data_buffer){
-        Serial.write(data_buffer, 7);
+     void startSerial() {
+       //Serial.begin(9600);
+
+       proto.beginToSerial();
+    }
+
+
+    void receive() {
+        if(Serial.available()) {
+            int hz = proto.read(tinyPacket);
+             if (hz > 0)
+                onReceive(tinyPacket.getString());
+
+        }
+    }
+
+/*
+    void sendPacket(){
+      //  tinyPacket.clear();
+
+    //    hdlc1.write(tinyPacket);
+
+    //    hdlc1.run_tx(data_buffer, 128);
+     //   hdlc1.run_rx(data_buffer, 128);
+    }
+*/
+
+    void sendPacket(unsigned char* data_buffer, int numberBytes){
+        Serial.write(data_buffer, numberBytes);
     }
 }

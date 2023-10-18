@@ -1,0 +1,74 @@
+#pragma once
+
+#include "command.h"
+#include "interface.h"
+#include "errors.h"
+
+template<class T>
+T* make_Sensor() {
+    static T sensor;
+    return &sensor;
+}
+
+template<class T>
+class APart  : public Interface {
+public:
+
+    virtual char getCode() const override {
+        return code;
+    };
+
+    virtual char fun(char c) override {
+        for(int i = 0; i < commandCounter; ++i) {
+            if (c == commands[i].code) {
+                if(checkState(commands[i]))
+                    return commands[i].fun(commands[i].ptr);
+                else
+                    return Errors::IncompatibleLaunchPhase;
+            }
+        }
+
+        return Errors::WrongCommandByte;
+    }
+
+    virtual bool moreUpdate() override {
+        return updateState;
+    };
+
+    virtual int getUpdatesSpeed() override {
+        return updatesSpeed;
+    }
+
+
+protected:
+    explicit APart(char c, bool updateS = false, int updatesS = 1) 
+        :   updateState(updateS),
+            updatesSpeed(updatesS * 1000),
+            code(c), 
+            commandCounter(0) {}
+
+    void addCommand(T* ptr, char code, char(*fun)(T*), int flags = LaunchPhase::Preparation | LaunchPhase::Ignition
+                                                                 | LaunchPhase::LiftOff     | LaunchPhase::Recovery ) {                                         
+        commands[commandCounter].ptr = ptr;
+        commands[commandCounter].code = code;
+        commands[commandCounter].fun = fun;
+        commands[commandCounter].flags = flags;
+        ++commandCounter;
+    }
+
+protected:
+    bool updateState;
+    int updatesSpeed;
+
+private:
+    char code;
+    int commandCounter;
+    Command<T> commands[6];
+    
+private:
+    bool checkState(const Command<T>& command) const {
+        return command.flags & launchPhase;
+    }
+};
+
+
