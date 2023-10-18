@@ -15,7 +15,6 @@ char SensorMessage::sendMessage(char partCode, float data) {
     messageBuffers[2] = MessageType::Sensor;
     messageBuffers[3] = partCode;
     messageBuffers[4] = (char)val;
-    messageBuffers[6 + val] =  13;
 
     OurSerial::sendPacket(static_cast<unsigned char*>(static_cast<void*>(messageBuffers)), val + 6);
 
@@ -47,7 +46,7 @@ char LaunchPhaseMessage::sendMessage(char partCode) {
     messageBuffers[2] = MessageType::Phase;
     messageBuffers[3] = partCode;
 
-    OurSerial::sendPacket(messageBuffers);
+    OurSerial::sendPacket(messageBuffers, 5);
 
     return Errors::Success;
 }
