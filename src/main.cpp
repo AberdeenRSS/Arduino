@@ -11,6 +11,10 @@
 #include "Parts/Sensors/temperaturesensor.h"
 #include "Parts/Parts/marduino.h"
 #include "Parts/Sensors/photoresistorsensor.h"
+#include "Parts/Sensors/pressuresensor.h"
+#include "Parts/Sensors/orientationsensor.h"
+
+
 
 
 MyArduino* myArduino = make_Sensor<MyArduino>();
@@ -23,8 +27,8 @@ void setup() {
   myArduino->reg(make_Sensor<MArduno>());
   myArduino->reg(make_Sensor<MyServo>());
   myArduino->reg(make_Sensor<Igniter>());
-  myArduino->reg(make_Sensor<AnalogThemp>());
-  myArduino->reg(make_Sensor<PhotoResistorSensor>());
+  myArduino->reg(make_Sensor<PressureSensor>());
+  myArduino->reg(make_Sensor<OrientationSensor>());
 
   OurSerial::startSerial();
 
@@ -34,11 +38,11 @@ void setup() {
 void loop() {
   OurSerial::receive();  
   myArduino->update();
- // myArduino->read_data();
+  myArduino->read_data();
 }
 
-/*
 
+/*
   int i = Serial.read();
   if (i == 48) {
     unsigned char close[] = {0x7E, 0xFF, 0x4F, 0x01,  0x00, 0x7E};
@@ -55,7 +59,6 @@ void loop() {
   else if(i == 50) {
     unsigned  char open[] = {0x7E, 0xFF, 0x4F, 0x02, 0x00, 0x7E};
     myArduino->find(open[3], open[4]);
-
   }
   else if(i == 51) {
     unsigned  char open[] = {0x7E, 0xFF, 0x4F, 0x00, 0x00, 0x7E};
@@ -67,7 +70,7 @@ void loop() {
   }
 
 }
-
+/*
 
 
 void setup() {

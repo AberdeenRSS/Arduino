@@ -6,8 +6,10 @@ Igniter::Igniter() : APart(0x02) {
         pinMode(IgniterPin, OUTPUT);
         digitalWrite(IgniterPin, LOW);
 
-        addCommand(this,  0x00, [](Igniter* t) { return t->ignite(); }, LaunchPhase::Ignition);
+        addCommand(this,  0x00, [](Igniter* t) { return t->ignite(); },           LaunchPhase::Ignition);
+        //addCommand(this,  0x00, [](Igniter* t) { return t->ignite(); } );
         addCommand(this,  0x01, [](Igniter* t) { return t->igniteWithDelay();  }, LaunchPhase::Ignition);
+
 }
 
 char Igniter::ignite() {

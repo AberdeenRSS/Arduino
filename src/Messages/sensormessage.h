@@ -4,7 +4,7 @@
 
 class SensorMessage : public AMessage {
 public:
-   static char sendMessage(char, float);
+   static char sendMessage(char, float, char sensorDataPart = 0x01);
 };
 
 struct CommandResponseMessage : AMessage {

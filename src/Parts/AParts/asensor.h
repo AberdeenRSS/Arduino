@@ -25,8 +25,8 @@ public:
         return result;
     }
 
-    char send_Message(float data) {
-        return  SensorMessage::sendMessage(this->getCode(), data);
+    char send_Message(float data, char sensorDataPart = 0x01) {
+        return  SensorMessage::sendMessage(this->getCode(), data, sensorDataPart);
     }
 
     void setUpdateSpeed(int s = 1) {

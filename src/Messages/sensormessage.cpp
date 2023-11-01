@@ -3,20 +3,21 @@
 #include "Serial/ourserial.h"
 #include "errors.h"
 
-char SensorMessage::sendMessage(char partCode, float data) {
+char SensorMessage::sendMessage(char partCode, float data, char sensorDataPart) {
     char messageBuffers[40];
     char floatStr[20]; 
 
     dtostrf(data, 1, 2, floatStr);  
-    int val = snprintf(messageBuffers + 5,  sizeof(messageBuffers), "%s", floatStr);
+    int val = snprintf(messageBuffers + 6,  sizeof(messageBuffers), "%s", floatStr);
 
-    messageBuffers[0] = messageBuffers[5 + val] = MessageBound::MessageSE;
+    messageBuffers[0] = messageBuffers[6 + val] = MessageBound::MessageSE;
     messageBuffers[1] = Connections::ArduinoAndroid;
     messageBuffers[2] = MessageType::Sensor;
     messageBuffers[3] = partCode;
-    messageBuffers[4] = (char)val;
+    messageBuffers[4] = sensorDataPart;
+    messageBuffers[5] = (char)val;
 
-    OurSerial::sendPacket(static_cast<unsigned char*>(static_cast<void*>(messageBuffers)), val + 6);
+    OurSerial::sendPacket(static_cast<unsigned char*>(static_cast<void*>(messageBuffers)), val + 7);
 
     return Errors::Success;
 }
