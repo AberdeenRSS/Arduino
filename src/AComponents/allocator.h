@@ -2,13 +2,12 @@
 #include "Arduino.h"
 
 namespace {
-    const int n = 128;
+    const int n = 40;
 
     void* array() {
         static char arr[n];
         return arr;
     }
-
 };
 
 template<class T, class Data>
@@ -27,16 +26,17 @@ struct Allocator {
     }
 
     void show() {
-        char* ptr = arr;
-        for(int i = 0; i < 256; ++i) {
+        /*
+        char* ptr = static_cast<char*>(arr);
+        for(uint16_t i = 0; i < 256; ++i) {
             Serial.print("I (");
             Serial.print(i);
             Serial.print(") = ");
             Serial.println(ptr[i]);
-        }
+        }*/
     }
 
 private:
-    int shift;
+    uint8_t shift;
     void* arr;
 };

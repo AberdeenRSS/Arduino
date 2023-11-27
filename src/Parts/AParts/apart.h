@@ -10,7 +10,7 @@ T* make_Sensor() {
     return &sensor;
 }
 
-template<class T>
+template<class T, const int K>
 class APart  : public Interface {
 public:
 
@@ -63,11 +63,12 @@ protected:
 private:
     char code;
     int commandCounter;
-    Command<T> commands[6];
+    Command<T> commands[K];
     
 private:
     bool checkState(const Command<T>& command) const {
-        return command.flags & launchPhase;
+        LaunchPhase::StateEnum* launchPhase = getLaunchPhase();
+        return command.flags & (*launchPhase);
     }
 };
 

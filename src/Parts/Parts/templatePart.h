@@ -2,7 +2,7 @@
 
 #include "Parts/AParts/apart.h"
 
-class PartName : public APart<PartName> {
+class PartName : public APart<PartName, 1> {
 public:
   PartName();
   

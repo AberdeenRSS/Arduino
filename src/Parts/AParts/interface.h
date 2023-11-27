@@ -11,8 +11,4 @@ public:
     virtual void update() {}
     virtual bool moreUpdate() = 0;
     virtual int  getUpdatesSpeed() = 0;
-
-
-protected:
-   // virtual void defineCommands() = 0;
 };

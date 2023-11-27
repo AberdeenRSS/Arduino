@@ -8,53 +8,36 @@
 namespace OurSerial {
     MyArduino* myArduino = make_Sensor<MyArduino>();
 
-   // char ourBuffer[128];
+    char buf[128];
+    tinyproto::Light proto;
+    tinyproto::Hdlc hdlc(static_cast<void*>(buf), 128); 
 
-   // tinyproto::Hdlc hdlc1(ourBuffer, 128);
-    tinyproto::Light  proto;
-    tinyproto::StaticPacket<64> tinyPacket;
 
-   // char data_buffer[128];
-
-    void onReceive(void* data) {
+    void onReceive(tinyproto::IPacket &pkt) {
+        void* data = pkt.data();
         CommandMessage* msg1 = static_cast<CommandMessage*>(data);
-        char result = msg1->check();
 
-        if (result == Errors::Success)
-            result = myArduino->find(msg1->getPart(), msg1->getCommand());
-        
-
-        CommandResponseMessage::sendMessage(msg1->getPart(), msg1->getCommand(), result);
+        char result = myArduino->find(msg1->getPart(), msg1->getCommand());
+        msg1->sendResponse(result);
     }
 
-     void startSerial() {
-       //Serial.begin(9600);
+    void startSerial() {
+        hdlc.setReceiveCallback(onReceive);
+        hdlc.enableCheckSum();
+        hdlc.begin();
 
-       proto.beginToSerial();
+        bool hzz = proto.enableCheckSum();
+        proto.beginToSerial();
     }
-
 
     void receive() {
-        if(Serial.available()) {
-            int hz = proto.read(tinyPacket);
-             if (hz > 0)
-                onReceive(tinyPacket.getString());
-
+        if (Serial.available()) {
+            uint8_t byte = Serial.read();
+            hdlc.run_rx( &byte, 1 ); 
         }
     }
 
-/*
-    void sendPacket(){
-      //  tinyPacket.clear();
-
-    //    hdlc1.write(tinyPacket);
-
-    //    hdlc1.run_tx(data_buffer, 128);
-     //   hdlc1.run_rx(data_buffer, 128);
-    }
-*/
-
-    void sendPacket(unsigned char* data_buffer, int numberBytes){
-        Serial.write(data_buffer, numberBytes);
+    void sendPacket(char* data_buffer, int numberBytes){
+        proto.write(data_buffer, numberBytes);
     }
 }

@@ -6,5 +6,5 @@ namespace OurSerial {
 
     void receive();
 
-    void sendPacket(unsigned char* data_buffer, int n = 7);
+    void sendPacket(char* data_buffer, int n = 7);
 }

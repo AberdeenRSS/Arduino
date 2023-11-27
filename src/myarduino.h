@@ -17,7 +17,6 @@ public:
   void show();
 
 private:  
-  BT<unsigned  char, Interface*> bt;
+  BT<unsigned char, Interface*> bt;
   Heap<Wrapper<Interface*>> heap;
-
 };

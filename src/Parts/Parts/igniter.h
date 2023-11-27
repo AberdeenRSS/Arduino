@@ -2,7 +2,7 @@
 
 #include "Parts/AParts/apart.h"
 
-class Igniter : public APart<Igniter> {
+class Igniter : public APart<Igniter, 1> {
 public:
     Igniter();
 
@@ -11,5 +11,4 @@ private:
 
 private:
     char ignite();
-    char igniteWithDelay();
 };

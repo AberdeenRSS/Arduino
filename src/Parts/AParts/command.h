@@ -15,8 +15,13 @@ struct LaunchPhase{
     };
 };
 
-inline LaunchPhase::StateEnum launchPhase = LaunchPhase::Init;
-//inline LaunchPhase::StateEnum launchPhase = LaunchPhase::Preparation;
+
+inline LaunchPhase::StateEnum* getLaunchPhase()   {
+    static LaunchPhase::StateEnum launchPhase = LaunchPhase::Init;
+    //static LaunchPhase::StateEnum launchPhase = LaunchPhase::Preparation;
+    return &launchPhase;
+}
+
 
 template<class T>
 class Command {

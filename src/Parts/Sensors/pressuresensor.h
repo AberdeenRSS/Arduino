@@ -12,5 +12,4 @@ public:
 
 private:
     Adafruit_BMP3XX bmp;
-
 };

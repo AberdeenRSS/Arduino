@@ -82,9 +82,9 @@ public:
         return !size;
     }
 private:
-    const int capacity = 10;
+    const int capacity = 5;
     int size;
-    T arr[10];
+    T arr[5];
 
 private:
     void _insert(int s, int target) {
@@ -96,10 +96,10 @@ private:
         }
     }
 
-    void _pop(int parent) {
-        int smallest = parent;
-        int l = 2 * parent + 1;
-        int r = 2 * parent + 2;
+    void _pop(uint8_t parent) {
+        uint8_t smallest = parent;
+        uint8_t l = 2 * parent + 1;
+        uint8_t r = 2 * parent + 2;
 
         if(l < size && arr[l] < arr[smallest])
             smallest = l;
@@ -115,7 +115,7 @@ private:
         }
     }
 
-    void swap(int firstIndex, int secondIndex) {
+    void swap(uint8_t firstIndex, uint8_t secondIndex) {
         T t = arr[firstIndex];
         arr[firstIndex] = arr[secondIndex];
         arr[secondIndex] = t;

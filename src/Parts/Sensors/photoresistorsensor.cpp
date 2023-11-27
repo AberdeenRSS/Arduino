@@ -11,7 +11,7 @@ char PhotoResistorSensor::read_data() {
     float data = analogRead(2); 
 	//Serial.println(value, DEC); // light intensity
 
-    return send_Message(data);
+   // return send_Message(data);
 }
 
 void PhotoResistorSensor::update()   {

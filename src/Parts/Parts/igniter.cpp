@@ -6,10 +6,7 @@ Igniter::Igniter() : APart(0x02) {
         pinMode(IgniterPin, OUTPUT);
         digitalWrite(IgniterPin, LOW);
 
-        addCommand(this,  0x00, [](Igniter* t) { return t->ignite(); },           LaunchPhase::Ignition);
-        //addCommand(this,  0x00, [](Igniter* t) { return t->ignite(); } );
-        addCommand(this,  0x01, [](Igniter* t) { return t->igniteWithDelay();  }, LaunchPhase::Ignition);
-
+        addCommand(this,  0x00, [](Igniter* t) { return t->ignite(); }, LaunchPhase::Ignition);
 }
 
 char Igniter::ignite() {
@@ -17,12 +14,9 @@ char Igniter::ignite() {
 
     // uncomment 
     ////digitalWrite(IgniterPin, LOW);  
-
-    launchPhase = LaunchPhase::LiftOff;
+    LaunchPhase::StateEnum* launchPhase = getLaunchPhase();
+    *launchPhase = LaunchPhase::LiftOff;
 
     return Errors::Success;
 }
 
-char Igniter::igniteWithDelay() {
-    return Errors::Success;
-}

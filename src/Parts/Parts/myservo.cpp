@@ -7,7 +7,7 @@ MyServo::MyServo()
       closedPos(141),
       openPos(90) {
 
-        myservo.attach(ServoPin);  // attaches the servo on pin 9 to the servo object
+        myservo.attach(ServoPin);  
         myservo.write(closedPos);
 
         addCommand(this,  0x00, [](MyServo* t) { return t->close(); }, LaunchPhase::Preparation | LaunchPhase::LiftOff | LaunchPhase::Recovery);

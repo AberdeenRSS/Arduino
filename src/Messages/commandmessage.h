@@ -1,14 +1,19 @@
 #pragma once
 
-#include "amessage.h"
 #include "errors.h"
+#include "Serial/ourserial.h"
 
-class CommandMessage : public AMessage {
+
+class CommandMessage{
 public:
-    char check() const;
-    char getPart() const;
+    CommandMessage();
+    
+    char getPart()    const;
     char getCommand() const;
-
+    int  getIndex()   const;
+    void sendResponse(char result);
+    void send();
+    
 private:
-    unsigned char message[6];
+    char arr[6];
 };

@@ -2,6 +2,8 @@
 #include "Serial/ourserial.h"
 #include "Messages/sensormessage.h"
 #include "errors.h"
+#include "Messages/commandmessage.h"
+
 MArduno::MArduno() : APart(0x00, true) {
     addCommand(this,  0x00, [](MArduno* t) { return t->resetArduino(); });
     addCommand(this,  0x01, [](MArduno* t) { return t->startPreparationPhase(); },  LaunchPhase::Init | LaunchPhase::Ignition   );
@@ -16,7 +18,8 @@ char MArduno::resetArduino() {
 }
 
 char MArduno::startPreparationPhase() {
-    launchPhase = LaunchPhase::Preparation;
+    LaunchPhase::StateEnum* launchPhase = getLaunchPhase();
+    *launchPhase = LaunchPhase::Preparation;
 
     updateState = false;
 
@@ -24,20 +27,33 @@ char MArduno::startPreparationPhase() {
 }
 
 char MArduno::startIgnitionPhase() {
-    launchPhase = LaunchPhase::Ignition;
+    LaunchPhase::StateEnum* launchPhase = getLaunchPhase();
+    *launchPhase = LaunchPhase::Ignition;
+
+    updateState = false;
+
     return Errors::Success;
 }
 
 char MArduno::startLiftoffPhase() {
-    launchPhase = LaunchPhase::LiftOff;
+    LaunchPhase::StateEnum* launchPhase = getLaunchPhase();
+    *launchPhase = LaunchPhase::LiftOff;
+
+    updateState = false;
+
     return Errors::Success;
 }
 
 char MArduno::startRecoveryPhase(){
-    launchPhase = LaunchPhase::Recovery;
+    LaunchPhase::StateEnum* launchPhase = getLaunchPhase();
+    *launchPhase = LaunchPhase::Recovery;
+
+    updateState = false;
+
     return Errors::Success;
 }
 
 void MArduno::update(){
-    LaunchPhaseMessage::sendMessage();
+    CommandMessage cm;
+    cm.send();
 }

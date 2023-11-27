@@ -5,7 +5,7 @@
 #include "Adafruit_BMP3XX.h"
 
 
-#define SEALEVELPRESSURE_HPA (1013.25)
+#define SEALEVELPRESSURE_HPA (1003)
 
 
 PressureSensor::PressureSensor() 
@@ -14,10 +14,8 @@ PressureSensor::PressureSensor()
 
     addCommand(this,  0x00, [](PressureSensor* t) { return t->read_data(); });
 
-   // addCommand(this,  0x00, [](PressureSensor* t) { return t->read_data(); });
-    
     if (!bmp.begin_I2C()) {   // hardware I2C mode, can pass in address & alt Wire
-
+    
     }
 
     // Set up oversampling and filter initialization
@@ -33,14 +31,9 @@ void PressureSensor::update() {
 }
 
 char PressureSensor::read_data() {
-    if (! bmp.performReading()) 
-        return Errors::WrongCommandByte;
+    if (!bmp.performReading()) 
+        return Errors::JustWrong;
     
-
-    send_Message(bmp.temperature);
-    send_Message(bmp.pressure / 100.0, 0x02);
-    send_Message(bmp.readAltitude(SEALEVELPRESSURE_HPA), 0x03);
-
-
+    send_Message(bmp.temperature, bmp.pressure / 100.0, bmp.readAltitude(SEALEVELPRESSURE_HPA));
     return Errors::Success;
 }

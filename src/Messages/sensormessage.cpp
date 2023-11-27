@@ -3,57 +3,30 @@
 #include "Serial/ourserial.h"
 #include "errors.h"
 
-char SensorMessage::sendMessage(char partCode, float data, char sensorDataPart) {
-    char messageBuffers[40];
-    char floatStr[20]; 
 
-    dtostrf(data, 1, 2, floatStr);  
-    int val = snprintf(messageBuffers + 6,  sizeof(messageBuffers), "%s", floatStr);
+SensorMessages::SensorMessages(char partID, char type, char payloadL)
+    : i(1) {
 
-    messageBuffers[0] = messageBuffers[6 + val] = MessageBound::MessageSE;
-    messageBuffers[1] = Connections::ArduinoAndroid;
-    messageBuffers[2] = MessageType::Sensor;
-    messageBuffers[3] = partCode;
-    messageBuffers[4] = sensorDataPart;
-    messageBuffers[5] = (char)val;
+    for (uint8_t j = 0; j < 8; ++j)
+        arr[j] = 0;
 
-    OurSerial::sendPacket(static_cast<unsigned char*>(static_cast<void*>(messageBuffers)), val + 7);
-
-    return Errors::Success;
+    arr[0] = partID;
+    arr[1] |= type << 4;
+    arr[1] |= payloadL;
 }
 
-
-char CommandResponseMessage::sendMessage(char partCode, char commandCode, char result) {
-    unsigned char messageBuffers[7];
-
-    messageBuffers[0] = messageBuffers[6] = MessageBound::MessageSE;
-    messageBuffers[1] = Connections::ArduinoAndroid;
-    messageBuffers[2] = MessageType::Command;
-    messageBuffers[3] = partCode;
-    messageBuffers[4] = commandCode;
-    messageBuffers[5] = result;
-
-    OurSerial::sendPacket(messageBuffers);
-
-    return Errors::Success;
+void SensorMessages::addData(short data) {
+    short* ptr = reinterpret_cast<short*>(arr + i * 2);
+    *ptr = data;
+    ++i;
 }
 
-
-char LaunchPhaseMessage::sendMessage(char partCode) {
-    unsigned char messageBuffers[5];
-
-    messageBuffers[0] = messageBuffers[4] =  MessageBound::MessageSE;
-    messageBuffers[1] = Connections::ArduinoAndroid;
-    messageBuffers[2] = MessageType::Phase;
-    messageBuffers[3] = partCode;
-
-    OurSerial::sendPacket(messageBuffers, 5);
-
-    return Errors::Success;
+int SensorMessages::getPart() const {
+    unsigned char mask = 127; 
+        
+    return arr[0] & mask;
 }
 
-
-
-
-
-
+void SensorMessages::sendMessage() {
+    OurSerial::sendPacket(reinterpret_cast<char*>(arr), 2 + (i - 1) * 2);
+}

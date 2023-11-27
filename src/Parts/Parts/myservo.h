@@ -3,7 +3,7 @@
 #include <Servo.h>
 #include "Parts/AParts/apart.h"
 
-class MyServo : public APart<MyServo> {
+class MyServo : public APart<MyServo, 2> {
 public:
   MyServo();
   
