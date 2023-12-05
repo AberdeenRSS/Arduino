@@ -3,11 +3,15 @@
 #include "Parts/AParts/interface.h"
 #include "errors.h"
 
-void MyArduino::reg(Interface* sensor, bool updates) {
-    bt.insert(sensor->getCode(), sensor);
+void MyArduino::registerPart(Interface* part) {
+    array.registerPart(part);
 
-    if(sensor->moreUpdate())
-        addUpdateComponent(sensor->getUpdatesSpeed() + millis(), sensor);
+    if(part->moreUpdate())
+        addUpdateComponent(part->getUpdatesSpeed() + millis(), part);
+}
+
+void MyArduino::registerSensor(Interface* sensor){
+    array.registerSensor(sensor);
 }
 
 void MyArduino::update() {
@@ -22,18 +26,14 @@ void MyArduino::update() {
                 if(obj->moreUpdate()) 
                     addUpdateComponent(obj->getUpdatesSpeed() + millis(), obj);
             }
-            
         }
     }
 }
 
-void MyArduino::show() {
-    bt.show();
-}
 
 char MyArduino::find(unsigned char part, char code) {
-    Interface* ptr = bt.find(part);
-    
+    Interface* ptr = array.find(part);
+
     if(!ptr)
         return Errors::WrongPartByte;
 
@@ -41,7 +41,7 @@ char MyArduino::find(unsigned char part, char code) {
 }
 
 void MyArduino::read_data() {
-    bt.in_order();
+    array.read_data();
 }
 
 void MyArduino::addUpdateComponent(unsigned long nextUpdate, Interface* component) {

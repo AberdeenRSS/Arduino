@@ -15,15 +15,14 @@ MyArduino* myArduino = make_Sensor<MyArduino>();
 void setup() {
   Serial.begin(9600);
 
-  myArduino->reg(make_Sensor<MArduno>());
-  myArduino->reg(make_Sensor<MyServo>());
-  myArduino->reg(make_Sensor<Igniter>());
-  myArduino->reg(make_Sensor<PressureSensor>());
-  myArduino->reg(make_Sensor<OrientationSensor>());
+  myArduino->registerPart(make_Sensor<MArduno>());
+  myArduino->registerPart(make_Sensor<MyServo>());
+  myArduino->registerPart(make_Sensor<Igniter>());
+
+  myArduino->registerSensor(make_Sensor<PressureSensor>());
+  myArduino->registerSensor(make_Sensor<OrientationSensor>());
 
   OurSerial::startSerial();
-
-  //myArduino->show();
 }
 
 void loop() { 

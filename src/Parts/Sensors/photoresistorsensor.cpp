@@ -8,10 +8,12 @@ PhotoResistorSensor::PhotoResistorSensor() : ASensor(0x52, 2) {
 }
 
 char PhotoResistorSensor::read_data() {
-    float data = analogRead(2); 
+    //float data = analogRead(2); 
 	//Serial.println(value, DEC); // light intensity
 
    // return send_Message(data);
+
+   return Errors::Success;
 }
 
 void PhotoResistorSensor::update()   {

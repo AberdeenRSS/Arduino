@@ -1,7 +1,11 @@
 #pragma once
 
-#include "AComponents/bst.h"
+#define PartsCount 3
+#define SensorsCount 2
+
+#include <Arduino.h>
 #include "AComponents/heap.h"
+#include "AComponents/container.h"
 
 class Interface;
 
@@ -11,12 +15,12 @@ public:
   void read_data();
 
   char find(unsigned  char part, char code);
-  void reg(Interface*r, bool updates = false);
+
+  void registerPart(Interface*r);
+  void registerSensor(Interface*r);
   void addUpdateComponent(unsigned long nextUpdate, Interface* component);
 
-  void show();
-
 private:  
-  BT<unsigned char, Interface*> bt;
   Heap<Wrapper<Interface*>> heap;
+  Container array;
 };

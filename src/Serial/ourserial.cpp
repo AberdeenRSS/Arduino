@@ -26,7 +26,7 @@ namespace OurSerial {
         hdlc.enableCheckSum();
         hdlc.begin();
 
-        bool hzz = proto.enableCheckSum();
+        proto.enableCheckSum();
         proto.beginToSerial();
     }
 

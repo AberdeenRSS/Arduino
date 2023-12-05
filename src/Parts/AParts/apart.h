@@ -41,7 +41,7 @@ public:
 
 
 protected:
-    explicit APart(char c, bool updateS = false, int updatesS = 1) 
+    explicit APart(char c, bool updateS = false, double updatesS = 1) 
         :   updateState(updateS),
             updatesSpeed(updatesS * 1000),
             code(c), 
