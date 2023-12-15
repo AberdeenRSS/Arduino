@@ -12,7 +12,7 @@ private:
   int        closedPos; 
   int        openPos;
 
-  static const int ServoPin = 11;
+  static const int ServoPin = 4;
 
 private:
   char close();

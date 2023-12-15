@@ -8,7 +8,7 @@ public:
     void update();
 
 private:
-    static const int IgniterPin = 4;
+    static const int IgniterPin = 2;
 
 private:
     char ignite();
