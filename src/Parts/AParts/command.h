@@ -17,7 +17,7 @@ struct LaunchPhase{
 
 
 inline LaunchPhase::StateEnum* getLaunchPhase()   {
-    static LaunchPhase::StateEnum launchPhase = LaunchPhase::Init;
+    static LaunchPhase::StateEnum launchPhase = LaunchPhase::Preparation;
     //static LaunchPhase::StateEnum launchPhase = LaunchPhase::Preparation;
     return &launchPhase;
 }

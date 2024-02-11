@@ -7,9 +7,9 @@
 template<class T>
 class ASensor : public APart<T, 1> {
 public:
-    explicit ASensor(char code, int updateSpeedRate = 1) 
+    explicit ASensor(char code, int updateSpeedRate = 1000) 
         : APart<T, 1>(code),
-          updateSpeed(1000 * updateSpeedRate) {}
+          updateSpeed(updateSpeedRate) {}
 
     virtual char read_data() = 0;
 
@@ -25,14 +25,7 @@ public:
         return result;
     }
 
-    char send_Message(uint16_t data1, uint16_t data2, uint16_t data3) {
-        SensorMessages sm(this->getCode(), 1, 3);
-        sm.addData(data1);
-        sm.addData(data2);
-        sm.addData(data3);
-        sm.sendMessage();
-        return 0;
-    }
+
 
     void setUpdateSpeed(int s = 1) {
         updateSpeed = s * 1000;

@@ -2,11 +2,11 @@
 #include "errors.h"
 
 CommandMessage::CommandMessage() {
-    arr[0] = 0; 
+    arr[0] = 0;
     arr[1] = 0;
     arr[2] = 0;
 
-    arr[0] |= 1 << 7;  
+    arr[0] |= 1 << 7;  // Set command direction flag: 1 -> arduino to flight computer
 }
 
 

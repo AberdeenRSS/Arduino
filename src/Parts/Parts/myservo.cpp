@@ -10,8 +10,8 @@ MyServo::MyServo()
         myservo.attach(ServoPin);  
         myservo.write(closedPos);
 
-        addCommand(this,  0x00, [](MyServo* t) { return t->close(); }, LaunchPhase::Preparation | LaunchPhase::LiftOff | LaunchPhase::Recovery);
-        addCommand(this,  0x01, [](MyServo* t) { return t->open();  }, LaunchPhase::Preparation | LaunchPhase::LiftOff | LaunchPhase::Recovery);
+        addCommand(this,  0x00, [](MyServo* t) { return t->close(); });
+        addCommand(this,  0x01, [](MyServo* t) { return t->open();  });
 }
 
 char MyServo::close() {

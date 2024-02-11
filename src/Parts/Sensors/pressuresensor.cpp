@@ -34,6 +34,6 @@ char PressureSensor::read_data() {
     if (!bmp.performReading()) 
         return Errors::JustWrong;
     
-    send_Message(bmp.temperature, bmp.pressure / 100.0, bmp.readAltitude(SEALEVELPRESSURE_HPA));
+    // send_Message(bmp.temperature, bmp.pressure / 100.0, bmp.readAltitude(SEALEVELPRESSURE_HPA));
     return Errors::Success;
 }

@@ -54,6 +54,4 @@ char MArduno::startRecoveryPhase(){
 }
 
 void MArduno::update(){
-    CommandMessage cm;
-    cm.send();
 }

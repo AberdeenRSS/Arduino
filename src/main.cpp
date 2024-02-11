@@ -19,7 +19,7 @@ void setup() {
   myArduino->registerPart(make_Sensor<MyServo>());
   myArduino->registerPart(make_Sensor<Igniter>());
 
-  myArduino->registerSensor(make_Sensor<PressureSensor>());
+  // myArduino->registerSensor(make_Sensor<PressureSensor>());
   myArduino->registerSensor(make_Sensor<OrientationSensor>());
 
   OurSerial::startSerial();

@@ -6,7 +6,7 @@ Igniter::Igniter() : APart(0x02, false, 0.5) {
         pinMode(IgniterPin, OUTPUT);
         digitalWrite(IgniterPin, LOW);
 
-        addCommand(this,  0x00, [](Igniter* t) { return t->ignite(); }, LaunchPhase::Ignition);
+        addCommand(this,  0x00, [](Igniter* t) { return t->ignite(); });
 }
 
 void Igniter::update() {
