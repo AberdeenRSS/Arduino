@@ -14,7 +14,7 @@ private:
 
   static const int ServoPin = 4;
 
-private:
+public:
   char close();
   char open();
 };

@@ -12,4 +12,7 @@ public:
 
 private:
     Adafruit_BNO055 bno;
+    bool initializeSuccess;
+    SensorMessages<sizeof(int)*4 + sizeof(bool)>* sm;
+
 };

@@ -12,4 +12,6 @@ public:
 
 private:
     Adafruit_BMP3XX bmp;
+    bool initializeSuccess;
+    SensorMessages<sizeof(float)*2>* sm;
 };

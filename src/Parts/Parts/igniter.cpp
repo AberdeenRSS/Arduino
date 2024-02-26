@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "myarduino.h"
 
-Igniter::Igniter() : APart(0x02, false, 0.5) { 
+Igniter::Igniter() : APart(0x02, true, 0.1) { 
         pinMode(IgniterPin, OUTPUT);
         digitalWrite(IgniterPin, LOW);
 
@@ -10,20 +10,18 @@ Igniter::Igniter() : APart(0x02, false, 0.5) {
 }
 
 void Igniter::update() {
-    digitalWrite(IgniterPin, LOW); 
 
-    updateState = false;
+    // Turn off igniter pin after ignitionOnMillis
+    if(millis() > (lastIgniteMillis + ignitionOnMillis)){
+        lastIgniteMillis = 0;
+        digitalWrite(IgniterPin, LOW); 
+    }
+
 }
 
 char Igniter::ignite() {
     digitalWrite(IgniterPin, HIGH);  
-
-    updateState = true;
-    MyArduino* myArduino = make_Sensor<MyArduino>();
-    myArduino->addUpdateComponent(updatesSpeed + millis(), this);
-
-    LaunchPhase::StateEnum* launchPhase = getLaunchPhase();
-    *launchPhase = LaunchPhase::LiftOff;
+    lastIgniteMillis = millis();
 
     return Errors::Success;
 }

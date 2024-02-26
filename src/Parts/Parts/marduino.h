@@ -1,7 +1,7 @@
 #include "Parts/AParts/apart.h"
 
 
-class MArduno : public APart<MArduno, 5> {
+class  MArduno : public APart<MArduno, 5> {
     enum States {};
 public :
     MArduno();
@@ -10,9 +10,13 @@ public :
 private:
     void(* resetFunc) (void) = 0;
 
+
+    static const int timeout = 10000;
+    unsigned long lastKeepAliveMillis = 0;
+    bool timeoutTriggered = false;
+
     char resetArduino();
-    char startPreparationPhase();
-    char startIgnitionPhase();
-    char startLiftoffPhase();
-    char startRecoveryPhase();
+    char keepAlive();
+
+    void onTimeout();
 };

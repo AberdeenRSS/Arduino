@@ -9,31 +9,41 @@
 
 
 PressureSensor::PressureSensor() 
-    : ASensor(0x53),
+    : ASensor(11, 200),
       bmp() {
+
+    sm = new SensorMessages<sizeof(float)*2>(11, 1);
 
     addCommand(this,  0x00, [](PressureSensor* t) { return t->read_data(); });
 
-    if (!bmp.begin_I2C()) {   // hardware I2C mode, can pass in address & alt Wire
+    initializeSuccess = bmp.begin_I2C();   // hardware I2C mode, can pass in address & alt Wire
     
-    }
-
     // Set up oversampling and filter initialization
     bmp.setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
     bmp.setPressureOversampling(BMP3_OVERSAMPLING_4X);
     bmp.setIIRFilterCoeff(BMP3_IIR_FILTER_COEFF_3);
     bmp.setOutputDataRate(BMP3_ODR_50_HZ);
+
 }
 
-
 void PressureSensor::update() {
-    
+    this->read_data();
 }
 
 char PressureSensor::read_data() {
-    if (!bmp.performReading()) 
-        return Errors::JustWrong;
+
+    // if(!initializeSuccess)
+    //     return Errors::JustWrong;
+
+    float pressure =  bmp.readPressure();
+    float temperature = bmp.readTemperature();
+
+    sm->reset();
     
-    // send_Message(bmp.temperature, bmp.pressure / 100.0, bmp.readAltitude(SEALEVELPRESSURE_HPA));
+    sm->addData(&pressure);
+    sm->addData(&temperature);
+
+    sm->sendMessage();
+    
     return Errors::Success;
 }

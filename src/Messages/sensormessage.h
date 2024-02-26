@@ -15,6 +15,10 @@ public:
         arr[1] |= type & 0b00001111;
     }
 
+    void reset(){
+        i = 0;
+    }
+
     /// @brief Assigns the provide data to the message. WARNING: unsafe operation, be careful that the byte length match PayloadL defined beforehand
     /// @param data Raw data pointer
     /// @param length Length of the data to add
@@ -31,6 +35,15 @@ public:
     {
         memcpy(arr + 2 + i, data, sizeof(bool));
         i += sizeof(bool);
+    }
+
+    /// @brief Assigns the provide data to the message. WARNING: unsafe operation, be careful that the byte length match PayloadL defined beforehand
+    /// @param data Raw data pointer
+    /// @param length Length of the data to add
+    void addData(float* data)
+    {
+        memcpy(arr + 2 + i, data, sizeof(float));
+        i += sizeof(float);
     }
 
     int getPart() const
