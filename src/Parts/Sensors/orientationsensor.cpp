@@ -7,7 +7,7 @@
 #define QUAT_LENGTH = sizeof(double)*4;
 
 OrientationSensor::OrientationSensor()
-    : ASensor(10, 200),
+    : ASensor(10, 91),
       
       bno(Adafruit_BNO055(55))
 {

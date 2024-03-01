@@ -9,7 +9,7 @@
 
 
 PressureSensor::PressureSensor() 
-    : ASensor(11, 200),
+    : ASensor(11, 111),
       bmp() {
 
     sm = new SensorMessages<sizeof(float)*2>(11, 1);
