@@ -1,12 +1,15 @@
-#include "ourserial.h"
+#include "hdlc_serial.h"
 #include "myarduino.h"
 #include "Parts/AParts/apart.h"
 #include "Messages/commandmessage.h"
 #include "Messages/sensormessage.h"
 #include "errors.h"
+#include "type_utils.h"
 
-namespace OurSerial {
-    MyArduino* myArduino = make_Sensor<MyArduino>();
+
+namespace HdlcSerial {
+    
+    MyArduino* myArduino = getSingleton<MyArduino>();
 
     char buf[128];
     tinyproto::Light proto;

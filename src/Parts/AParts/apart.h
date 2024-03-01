@@ -4,11 +4,7 @@
 #include "interface.h"
 #include "errors.h"
 
-template<class T>
-T* make_Sensor() {
-    static T sensor;
-    return &sensor;
-}
+
 
 template<class T, const int K>
 class APart  : public Interface {

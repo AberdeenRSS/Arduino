@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Serial/ourserial.h"
+#include "Serial/hdlc_serial.h"
 
 template <unsigned int PayloadL>
 class SensorMessages
@@ -55,7 +55,7 @@ public:
 
     void sendMessage()
     {
-        OurSerial::sendPacket(arr, PayloadL + 2); // 2 header bytes + data
+        HdlcSerial::sendPacket(arr, PayloadL + 2); // 2 header bytes + data
     }
 
 private:

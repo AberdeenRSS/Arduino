@@ -1,7 +1,7 @@
 #pragma once
 #include <TinyProtocol.h>
 
-namespace OurSerial {
+namespace HdlcSerial {
     void startSerial();
 
     void receive();

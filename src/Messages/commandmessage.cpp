@@ -29,9 +29,9 @@ void CommandMessage::sendResponse(char result) {
     arr[0] |= 1 << 6;
     arr[2] |= result;
 
-    OurSerial::sendPacket(reinterpret_cast<char*>(arr), 3); 
+    HdlcSerial::sendPacket(reinterpret_cast<char*>(arr), 3); 
 }
 
 void CommandMessage::send()  {
-    OurSerial::sendPacket(reinterpret_cast<char*>(arr), 3); 
+    HdlcSerial::sendPacket(reinterpret_cast<char*>(arr), 3); 
 }
