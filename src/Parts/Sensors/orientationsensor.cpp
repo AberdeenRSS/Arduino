@@ -17,7 +17,7 @@ OrientationSensor::OrientationSensor()
     addCommand(this, 0x00, [](OrientationSensor *t)
                { return t->read_data(); });
 
-    initializeSuccess = bno.begin();
+    initializeSuccess = bno.begin(adafruit_bno055_opmode_t::OPERATION_MODE_IMUPLUS);
 
     bno.setExtCrystalUse(true);
 

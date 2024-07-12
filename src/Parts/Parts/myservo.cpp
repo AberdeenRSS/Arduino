@@ -4,8 +4,8 @@
 MyServo::MyServo()
     : APart(0x01),
       myservo(),
-      closedPos(0),
-      openPos(170) {
+      closedPos(90),
+      openPos(-10) {
 
         myservo.attach(ServoPin);  
         myservo.write(closedPos);

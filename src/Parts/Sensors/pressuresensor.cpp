@@ -5,9 +5,6 @@
 #include "Adafruit_BMP3XX.h"
 
 
-#define SEALEVELPRESSURE_HPA (1003)
-
-
 PressureSensor::PressureSensor() 
     : ASensor(11, 111),
       bmp() {
@@ -22,7 +19,7 @@ PressureSensor::PressureSensor()
     bmp.setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
     bmp.setPressureOversampling(BMP3_OVERSAMPLING_4X);
     bmp.setIIRFilterCoeff(BMP3_IIR_FILTER_COEFF_3);
-    bmp.setOutputDataRate(BMP3_ODR_50_HZ);
+    bmp.setOutputDataRate(BMP3_ODR_200_HZ);
 
 }
 
